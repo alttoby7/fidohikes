@@ -24,11 +24,53 @@ const props = Astro.props;
     <BaseHead {...props} />
     <SiteSchema />
   </head>
-  <body class="min-h-screen flex flex-col bg-white text-gray-900 antialiased">
+  <body class="min-h-screen flex flex-col bg-parchment text-earth antialiased">
+    <!-- Scroll progress bar -->
+    <div id="scroll-progress" class="fixed top-0 left-0 h-0.5 bg-trail-light z-[60] transition-none" style="width: 0%"></div>
+
     <Header />
     <main class="flex-1">
       <slot />
     </main>
     <Footer />
+
+    <!-- Back to top button -->
+    <button
+      id="back-to-top"
+      class="fixed bottom-6 right-6 w-11 h-11 rounded-full bg-white border border-sand shadow-md text-trail hover:text-forest hover:border-forest transition-all opacity-0 pointer-events-none z-50"
+      aria-label="Back to top"
+    >
+      <svg class="w-5 h-5 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+      </svg>
+    </button>
+
+    <script>
+      // Scroll progress bar
+      const progressBar = document.getElementById('scroll-progress');
+      // Back to top button
+      const topBtn = document.getElementById('back-to-top');
+
+      window.addEventListener('scroll', () => {
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        if (progressBar && docHeight > 0) {
+          progressBar.style.width = `${(scrollTop / docHeight) * 100}%`;
+        }
+        if (topBtn) {
+          if (scrollTop > 500) {
+            topBtn.classList.remove('opacity-0', 'pointer-events-none');
+            topBtn.classList.add('opacity-100');
+          } else {
+            topBtn.classList.add('opacity-0', 'pointer-events-none');
+            topBtn.classList.remove('opacity-100');
+          }
+        }
+      }, { passive: true });
+
+      topBtn?.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    </script>
   </body>
 </html>

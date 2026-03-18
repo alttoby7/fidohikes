@@ -46,16 +46,18 @@ export async function getStaticPaths() {
 const { type, page, pillar } = Astro.props;
 
 let Content: any = null;
+let headings: { depth: number; slug: string; text: string }[] = [];
 if (type === 'page' && page) {
   const rendered = await render(page);
   Content = rendered.Content;
+  headings = rendered.headings;
 }
 ---
 
 {type === 'pillar' && <PillarHub pillar={pillar} />}
 
 {type === 'page' && Content && (
-  <ArticleLayout page={page}>
+  <ArticleLayout page={page} headings={headings}>
     <Content />
   </ArticleLayout>
 )}

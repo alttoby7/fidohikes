@@ -5,18 +5,25 @@ import ArticleSchema from '@/components/schema/ArticleSchema.astro';
 import FAQSchema from '@/components/schema/FAQSchema.astro';
 import AffiliateDisclosure from '@/components/affiliate/AffiliateDisclosure.astro';
 import AuthorBio from '@/components/AuthorBio.astro';
+import TableOfContents from '@/components/TableOfContents.astro';
+import TrailDivider from '@/components/TrailDivider.astro';
 import { getBreadcrumbs, getRelatedPages } from '@/lib/registry';
 import type { Page } from '@/lib/registry';
 
 interface Props {
   page: Page;
+  headings?: { depth: number; slug: string; text: string }[];
 }
 
-const { page } = Astro.props;
+const { page, headings = [] } = Astro.props;
 const { data } = page;
 const breadcrumbs = await getBreadcrumbs(page);
 const related = await getRelatedPages(page);
 const showAffiliate = data.affiliate?.enabled ?? false;
+
+// Reading time estimate
+const wordCount = data.excerpt ? data.excerpt.split(/\s+/).length * 8 : 1200; // rough estimate
+const readingTime = Math.max(1, Math.ceil(wordCount / 250));
 ---
 
 <BaseLayout
@@ -31,56 +38,81 @@ const showAffiliate = data.affiliate?.enabled ?? false;
   <ArticleSchema page={page} />
   {data.faqs.length > 0 && <FAQSchema faqs={data.faqs} />}
 
+  <!-- Article hero -->
+  {data.heroImage ? (
+    <div class="relative w-full h-[40vh] md:h-[50vh] overflow-hidden">
+      <img
+        src={data.heroImage}
+        alt={data.title}
+        class="absolute inset-0 w-full h-full object-cover"
+        loading="eager"
+      />
+      <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+      <div class="absolute bottom-0 left-0 right-0 p-6 md:p-10 max-w-4xl mx-auto">
+        <nav aria-label="Breadcrumb" class="text-sm text-white/60 mb-3">
+          <ol class="flex flex-wrap gap-1">
+            {breadcrumbs.map((crumb, i) => (
+              <li class="flex items-center gap-1">
+                {i > 0 && <span class="text-white/40">/</span>}
+                {i < breadcrumbs.length - 1 ? (
+                  <a href={crumb.href} class="hover:text-white/90">{crumb.label}</a>
+                ) : (
+                  <span class="text-white/80">{crumb.label}</span>
+                )}
+              </li>
+            ))}
+          </ol>
+        </nav>
+        <h1 class="font-heading text-3xl md:text-4xl font-800 text-white leading-tight">
+          {data.title}
+        </h1>
+      </div>
+    </div>
+  ) : (
+    <div class="max-w-4xl mx-auto px-4 pt-8">
+      <nav aria-label="Breadcrumb" class="text-sm text-gray-500 mb-6">
+        <ol class="flex flex-wrap gap-1">
+          {breadcrumbs.map((crumb, i) => (
+            <li class="flex items-center gap-1">
+              {i > 0 && <span class="text-gray-300">/</span>}
+              {i < breadcrumbs.length - 1 ? (
+                <a href={crumb.href} class="hover:text-forest">{crumb.label}</a>
+              ) : (
+                <span class="text-gray-700">{crumb.label}</span>
+              )}
+            </li>
+          ))}
+        </ol>
+      </nav>
+      <h1 class="font-heading text-3xl md:text-4xl font-800 text-earth mb-4">
+        {data.title}
+      </h1>
+    </div>
+  )}
+
   <article class="max-w-4xl mx-auto px-4 py-8">
-    <!-- Breadcrumbs -->
-    <nav aria-label="Breadcrumb" class="text-sm text-gray-500 mb-6">
-      <ol class="flex flex-wrap gap-1">
-        {breadcrumbs.map((crumb, i) => (
-          <li class="flex items-center gap-1">
-            {i > 0 && <span class="text-gray-300">/</span>}
-            {i < breadcrumbs.length - 1 ? (
-              <a href={crumb.href} class="hover:text-forest">{crumb.label}</a>
-            ) : (
-              <span class="text-gray-700">{crumb.label}</span>
-            )}
-          </li>
-        ))}
-      </ol>
-    </nav>
-
-    <!-- Title -->
-    <h1 class="font-heading text-3xl md:text-4xl font-800 text-earth mb-4">
-      {data.title}
-    </h1>
-
     {data.excerpt && (
-      <p class="text-lg text-gray-600 mb-6">{data.excerpt}</p>
+      <p class="text-lg text-earth-light mb-6">{data.excerpt}</p>
     )}
 
-    <!-- Author byline -->
+    <!-- Author byline + reading time -->
     <div class="flex flex-wrap items-center gap-4 mb-8">
       <AuthorBio variant="compact" />
-      {data.publishedDate && (
-        <span class="text-sm text-gray-400">
-          {data.publishedDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
-          {data.updatedDate && (
-            <span> · Updated {data.updatedDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
-          )}
-        </span>
-      )}
+      <div class="font-ui text-sm text-gray-400 flex flex-wrap items-center gap-x-2">
+        {data.publishedDate && (
+          <span>
+            {data.publishedDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+          </span>
+        )}
+        <span class="text-gray-300">·</span>
+        <span>{readingTime} min read</span>
+      </div>
     </div>
 
     {showAffiliate && <AffiliateDisclosure />}
 
-    <!-- Hero image -->
-    {data.heroImage && (
-      <img
-        src={data.heroImage}
-        alt={data.title}
-        class="w-full rounded-lg mb-8"
-        loading="eager"
-      />
-    )}
+    <!-- Table of contents -->
+    <TableOfContents headings={headings} />
 
     <!-- Content -->
     <div class="prose">
@@ -89,13 +121,14 @@ const showAffiliate = data.affiliate?.enabled ?? false;
 
     <!-- FAQs -->
     {data.faqs.length > 0 && (
-      <section class="mt-12 border-t border-gray-200 pt-8">
+      <section class="mt-12">
+        <TrailDivider />
         <h2 class="font-heading text-2xl font-700 text-earth mb-6">Frequently Asked Questions</h2>
         <dl class="space-y-6">
           {data.faqs.map((faq) => (
-            <div>
-              <dt class="font-semibold text-gray-900">{faq.question}</dt>
-              <dd class="mt-2 text-gray-600">{faq.answer}</dd>
+            <div class="bg-white border border-sand rounded-lg p-5">
+              <dt class="font-semibold text-earth">{faq.question}</dt>
+              <dd class="mt-2 text-earth-light">{faq.answer}</dd>
             </div>
           ))}
         </dl>

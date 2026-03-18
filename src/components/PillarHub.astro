@@ -47,44 +47,70 @@ const breadcrumbs = [
     </nav>
 
     <h1 class="font-heading text-3xl md:text-4xl font-800 text-earth mb-4">{data.name}</h1>
-    <p class="text-lg text-gray-600 mb-10">{data.description}</p>
+    <p class="text-lg text-earth-light mb-10">{data.description}</p>
 
     {clusters.map((cluster) => {
       const articles = clusterArticles.get(cluster.data.slug) ?? [];
       return (
-        <section class="mb-10">
-          <h2 class="font-heading text-xl font-700 text-earth-light mb-4">
-            {cluster.data.name}
-            <span class="text-sm font-normal text-gray-400 ml-2">({articles.length} articles)</span>
-          </h2>
-          <p class="text-gray-600 mb-4">{cluster.data.description}</p>
+        <section class="mb-12">
+          <div class="flex items-baseline gap-3 mb-4">
+            <h2 class="font-heading text-xl font-700 text-earth">
+              {cluster.data.name}
+            </h2>
+            {articles.length > 0 && (
+              <span class="font-ui text-xs font-medium text-trail bg-trail-light/20 px-2 py-0.5 rounded-full">{articles.length}</span>
+            )}
+          </div>
+          <p class="text-earth-light mb-5">{cluster.data.description}</p>
           {articles.length > 0 && (
-            <ul class="space-y-2">
+            <div class="grid sm:grid-cols-2 gap-4">
               {articles.map((article) => (
-                <li>
-                  <a href={`/${article.data.slug}/`} class="text-forest hover:underline">
-                    {article.data.title}
-                  </a>
-                </li>
+                <a
+                  href={`/${article.data.slug}/`}
+                  class="block bg-white border border-sand rounded-lg overflow-hidden hover:border-forest hover:shadow-sm transition-all group"
+                >
+                  {article.data.heroImage && (
+                    <img src={article.data.heroImage} alt={article.data.title} class="w-full h-32 object-cover" loading="lazy" />
+                  )}
+                  <div class="p-4">
+                    <h3 class="font-heading text-sm font-700 text-earth group-hover:text-forest transition-colors">
+                      {article.data.title}
+                    </h3>
+                    {article.data.excerpt && (
+                      <p class="mt-1 text-sm text-earth-light line-clamp-2">{article.data.excerpt}</p>
+                    )}
+                  </div>
+                </a>
               ))}
-            </ul>
+            </div>
           )}
         </section>
       );
     })}
 
     {unclustered.length > 0 && (
-      <section class="mb-10">
-        <h2 class="font-heading text-xl font-700 text-earth-light mb-4">More Articles</h2>
-        <ul class="space-y-2">
+      <section class="mb-12">
+        <h2 class="font-heading text-xl font-700 text-earth mb-5">More Articles</h2>
+        <div class="grid sm:grid-cols-2 gap-4">
           {unclustered.map((article) => (
-            <li>
-              <a href={`/${article.data.slug}/`} class="text-forest hover:underline">
-                {article.data.title}
-              </a>
-            </li>
+            <a
+              href={`/${article.data.slug}/`}
+              class="block bg-white border border-sand rounded-lg overflow-hidden hover:border-forest hover:shadow-sm transition-all group"
+            >
+              {article.data.heroImage && (
+                <img src={article.data.heroImage} alt={article.data.title} class="w-full h-32 object-cover" loading="lazy" />
+              )}
+              <div class="p-4">
+                <h3 class="font-heading text-sm font-700 text-earth group-hover:text-forest transition-colors">
+                  {article.data.title}
+                </h3>
+                {article.data.excerpt && (
+                  <p class="mt-1 text-sm text-earth-light line-clamp-2">{article.data.excerpt}</p>
+                )}
+              </div>
+            </a>
           ))}
-        </ul>
+        </div>
       </section>
     )}
   </div>

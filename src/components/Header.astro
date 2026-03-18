@@ -9,7 +9,7 @@ const navLinks = [
 ];
 ---
 
-<header class="border-b border-gray-200 bg-white sticky top-0 z-50">
+<header class="border-b border-sand bg-white/95 backdrop-blur-sm sticky top-0 z-50">
   <nav class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
     <a href="/" class="font-heading text-2xl font-800 text-forest">
       FidoHikes
@@ -43,13 +43,13 @@ const navLinks = [
   </nav>
 
   <!-- Mobile dropdown menu -->
-  <div id="mobile-menu" class="hidden md:hidden border-t border-gray-100 bg-white">
+  <div id="mobile-menu" class="md:hidden border-t border-sand bg-white overflow-hidden transition-[max-height] duration-300 ease-in-out max-h-0">
     <ul class="px-4 py-3 space-y-1">
       {navLinks.map((link) => (
         <li>
           <a
             href={link.href}
-            class="block py-2 px-3 rounded-md text-gray-700 hover:bg-gray-50 hover:text-forest transition-colors font-medium"
+            class="block py-2 px-3 rounded-md text-earth-light hover:bg-parchment hover:text-forest transition-colors font-medium"
           >
             {link.label}
           </a>
@@ -61,12 +61,16 @@ const navLinks = [
 
 <script>
   const btn = document.getElementById('mobile-menu-btn');
-  const menu = document.getElementById('mobile-menu');
+  const menu = document.getElementById('mobile-menu') as HTMLElement | null;
   const openIcon = document.getElementById('menu-open-icon');
   const closeIcon = document.getElementById('menu-close-icon');
 
+  let isOpen = false;
   btn?.addEventListener('click', () => {
-    const isOpen = menu?.classList.toggle('hidden') === false;
+    isOpen = !isOpen;
+    if (menu) {
+      menu.style.maxHeight = isOpen ? `${menu.scrollHeight}px` : '0';
+    }
     openIcon?.classList.toggle('hidden', isOpen);
     closeIcon?.classList.toggle('hidden', !isOpen);
     btn.setAttribute('aria-expanded', String(isOpen));

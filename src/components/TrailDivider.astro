@@ -1,0 +1,21 @@
+---
+interface Props {
+  class?: string;
+}
+
+const { class: className = '' } = Astro.props;
+---
+
+<div class={`flex items-center justify-center my-8 ${className}`} aria-hidden="true">
+  <svg width="200" height="12" viewBox="0 0 200 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path
+      d="M0 6 C20 6, 25 2, 40 2 S60 10, 80 6 S100 2, 120 6 S140 10, 160 6 S180 2, 200 6"
+      stroke="var(--color-trail-light)"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      fill="none"
+      opacity="0.5"
+    />
+    <circle cx="100" cy="6" r="3" fill="var(--color-trail-light)" opacity="0.6" />
+  </svg>
+</div>

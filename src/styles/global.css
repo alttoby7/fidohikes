@@ -23,6 +23,9 @@ html {
   font-family: var(--font-body);
   scroll-behavior: smooth;
   background-color: var(--color-parchment);
+  background-image: url('/images/topo-pattern.svg');
+  background-repeat: repeat;
+  background-size: 400px 400px;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -90,12 +93,21 @@ nav, button, .font-ui {
 .prose a:hover {
   color: var(--color-forest-dark);
 }
-.prose ul, .prose ol {
+.prose ul {
   margin-bottom: 1.25rem;
   padding-left: 1.5rem;
+  list-style-type: disc;
+}
+.prose ol {
+  margin-bottom: 1.25rem;
+  padding-left: 1.5rem;
+  list-style-type: decimal;
 }
 .prose li {
   margin-bottom: 0.5rem;
+}
+.prose li::marker {
+  color: var(--color-trail-light);
 }
 .prose img {
   border-radius: 0.5rem;

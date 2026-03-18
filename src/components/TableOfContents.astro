@@ -1,0 +1,53 @@
+---
+interface Props {
+  headings: { depth: number; slug: string; text: string }[];
+}
+
+const { headings } = Astro.props;
+const tocItems = headings.filter((h) => h.depth === 2 || h.depth === 3);
+---
+
+{tocItems.length >= 3 && (
+  <nav class="toc bg-white border border-sand rounded-lg p-5 mb-8">
+    <details class="md:open" open>
+      <summary class="font-heading text-sm font-700 uppercase tracking-wide text-earth cursor-pointer md:cursor-default md:list-none select-none">
+        In This Article
+      </summary>
+      <ul class="mt-3 space-y-1.5 text-sm">
+        {tocItems.map((h) => (
+          <li class={h.depth === 3 ? 'ml-4' : ''}>
+            <a
+              href={`#${h.slug}`}
+              class="toc-link text-earth-light hover:text-forest transition-colors block py-0.5"
+              data-slug={h.slug}
+            >
+              {h.text}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </details>
+  </nav>
+)}
+
+<script>
+  const tocLinks = document.querySelectorAll<HTMLAnchorElement>('.toc-link');
+  if (tocLinks.length > 0) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            tocLinks.forEach((l) => l.classList.remove('text-forest', 'font-medium'));
+            const active = document.querySelector(`.toc-link[data-slug="${entry.target.id}"]`);
+            active?.classList.add('text-forest', 'font-medium');
+          }
+        }
+      },
+      { rootMargin: '-80px 0px -60% 0px', threshold: 0 }
+    );
+    tocLinks.forEach((link) => {
+      const target = document.getElementById(link.dataset.slug!);
+      if (target) observer.observe(target);
+    });
+  }
+</script>
