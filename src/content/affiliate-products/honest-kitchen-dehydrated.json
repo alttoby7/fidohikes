@@ -1,0 +1,11 @@
+{
+  "productId": "honest-kitchen-dehydrated",
+  "asin": "B00FGOTBQO",
+  "title": "The Honest Kitchen Dehydrated Dog Food",
+  "category": "dog-food",
+  "defaultTrackingBucket": "reviews",
+  "image": "/images/hero/honest-kitchen.png",
+  "status": "active",
+  "urlVueSlug": "honest-kitchen-dehydrated",
+  "notes": "Primary backpacking food referenced in review and gear list."
+}

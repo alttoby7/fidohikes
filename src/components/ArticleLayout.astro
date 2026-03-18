@@ -19,7 +19,10 @@ const { page, headings = [] } = Astro.props;
 const { data } = page;
 const breadcrumbs = await getBreadcrumbs(page);
 const related = await getRelatedPages(page);
-const showAffiliate = data.affiliate?.enabled ?? false;
+const showAffiliate =
+  data.hasAffiliateLinks ||
+  data.affiliateProducts.length > 0 ||
+  (data.affiliate?.enabled ?? false);
 
 // Reading time estimate
 const wordCount = data.excerpt ? data.excerpt.split(/\s+/).length * 8 : 1200; // rough estimate
@@ -33,6 +36,7 @@ const readingTime = Math.max(1, Math.ceil(wordCount / 250));
   type="article"
   publishedDate={data.publishedDate}
   updatedDate={data.updatedDate}
+  disableOneTag={data.disableOneTag}
 >
   <BreadcrumbSchema items={breadcrumbs} />
   <ArticleSchema page={page} />

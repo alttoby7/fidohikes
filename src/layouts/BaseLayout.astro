@@ -13,9 +13,13 @@ interface Props {
   type?: 'website' | 'article';
   publishedDate?: Date;
   updatedDate?: Date;
+  disableOneTag?: boolean;
 }
 
 const props = Astro.props;
+const oneTagEnabled = import.meta.env.PUBLIC_ENABLE_ONETAG === 'true' && !props.disableOneTag;
+const oneTagScriptSrc = import.meta.env.PUBLIC_ONETAG_SCRIPT_SRC;
+const oneTagSiteId = import.meta.env.PUBLIC_ONETAG_SITE_ID;
 ---
 
 <!doctype html>
@@ -33,6 +37,16 @@ const props = Astro.props;
       <slot />
     </main>
     <Footer />
+
+    {oneTagEnabled && oneTagScriptSrc && (
+      <script
+        is:inline
+        src={oneTagScriptSrc}
+        defer
+        data-fidohikes-onetag="true"
+        data-site-id={oneTagSiteId}
+      ></script>
+    )}
 
     <!-- Back to top button -->
     <button

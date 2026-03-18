@@ -2,7 +2,7 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 ---
 
-<BaseLayout title="Affiliate Disclosure" description="How FidoHikes earns revenue through affiliate partnerships.">
+<BaseLayout title="Affiliate Disclosure" description="How FidoHikes earns revenue through affiliate partnerships." disableOneTag={true}>
   <article class="max-w-3xl mx-auto px-4 py-12">
     <h1 class="font-heading text-3xl md:text-4xl font-800 text-earth mb-6">Affiliate Disclosure</h1>
     <div class="prose">
@@ -14,6 +14,11 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
       <p>
         We participate in the Amazon Associates Program and other affiliate programs. When you
         click a product link and make a purchase, we receive a small percentage of the sale.
+      </p>
+      <p>
+        We may also use affiliate optimization or reporting tools such as oneTag on some pages.
+        When enabled, those tools help us understand which content and links perform best without
+        changing the fact that direct Amazon links remain the default path on the site.
       </p>
       <h2>Our Promise</h2>
       <p>

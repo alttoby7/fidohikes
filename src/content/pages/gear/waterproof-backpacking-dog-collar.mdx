@@ -35,11 +35,22 @@ faqs:
     answer: "Ours lasted our entire 900-mile Appalachian Trail hike and still looks brand new. The color hasn't faded and the engraving is fully legible."
 affiliate:
   enabled: true
+hasAffiliateLinks: true
+affiliateProducts:
+  - "dogids-waterproof-collar"
+affiliateBucket: "reviews"
+contentCluster: "dog-collars-for-outdoor-use"
 relatedPages:
   - "gear/best-dog-harness-for-hiking"
 ---
 
+import AmazonButton from '@/components/affiliate/AmazonButton.astro';
+import AmazonProductCard from '@/components/affiliate/AmazonProductCard.astro';
+import AmazonLink from '@/components/affiliate/AmazonLink.astro';
+
 We hiked 900 miles on the Appalachian Trail with our dog Toby. The collar he wore at mile one looked the same at mile 900. Here's why we'll never go back to cloth.
+
+<AmazonProductCard product="dogids-waterproof-collar" ctaText="Check price on Amazon" />
 
 ## Why Standard Cloth Collars Fail on Trail
 
@@ -49,7 +60,7 @@ The only time most cloth collars get washed is during grooming — and on a long
 
 ## What We Switched To
 
-When planning our AT thru-hike, we needed a collar that would stay clean, dry instantly, and not stink up our hammock at night. We found laser-engraved waterproof collars from dogIDs.
+When planning our AT thru-hike, we needed a collar that would stay clean, dry instantly, and not stink up our hammock at night. We found the <AmazonLink product="dogids-waterproof-collar" text="dogIDs waterproof engraved collar" /> — soft grip material, laser-engraved ID, and fully waterproof.
 
 The soft grip material means even when Toby gets soaked crossing a stream, the collar wipes off in seconds. No absorption, no odor, no waiting for it to dry.
 
@@ -71,4 +82,6 @@ The engraving stayed fully legible through every condition we encountered: rain,
 
 ## The Verdict
 
-At around $35, a waterproof engraved collar is one of the cheapest and most impactful upgrades you can make for trail hiking with your dog. It eliminates odor, dries instantly, and removes the need for dangling ID tags. We recommend dogIDs specifically for the engraving quality and soft grip material.
+At around $35, a waterproof engraved collar is one of the cheapest and most impactful upgrades you can make for trail hiking with your dog. It eliminates odor, dries instantly, and removes the need for dangling ID tags. We recommend the <AmazonLink product="dogids-waterproof-collar" text="dogIDs collar" /> specifically for the engraving quality and soft grip material.
+
+<AmazonButton product="dogids-waterproof-collar" ctaText="See the dogIDs collar on Amazon" />

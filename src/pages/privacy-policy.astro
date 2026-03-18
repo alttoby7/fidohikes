@@ -2,7 +2,7 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 ---
 
-<BaseLayout title="Privacy Policy" description="FidoHikes privacy policy — how we handle your data.">
+<BaseLayout title="Privacy Policy" description="FidoHikes privacy policy — how we handle your data." disableOneTag={true}>
   <article class="max-w-3xl mx-auto px-4 py-12">
     <h1 class="font-heading text-3xl md:text-4xl font-800 text-earth mb-6">Privacy Policy</h1>
     <div class="prose">
@@ -26,6 +26,13 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
       <p>
         When you click affiliate links, the destination merchant may collect information
         according to their own privacy policy.
+      </p>
+      <h2>oneTag and Affiliate Optimization</h2>
+      <p>
+        If FidoHikes enables oneTag or similar affiliate optimization tools, those services may
+        measure link and content performance to improve affiliate reporting. You can limit this
+        kind of tracking through your browser privacy controls, cookie settings, or content
+        blocking tools.
       </p>
       <h2>Contact</h2>
       <p>

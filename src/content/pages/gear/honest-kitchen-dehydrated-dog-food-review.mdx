@@ -35,12 +35,22 @@ faqs:
     answer: "Yes. Dehydrated food saves approximately 30-40% weight versus traditional kibble, which makes a real difference when your dog is carrying their own food in a pack."
 affiliate:
   enabled: true
+hasAffiliateLinks: true
+affiliateProducts:
+  - "honest-kitchen-dehydrated"
+affiliateBucket: "reviews"
+contentCluster: "dog-food-and-treats-for-adventures"
 relatedPages:
   - "hiking-dog-calorie-needs-with-dog-food-calculator"
   - "dog-gear-list-for-long-distance-or-thru-hiking-with-a-dog"
 ---
 
+import AmazonButton from '@/components/affiliate/AmazonButton.astro';
+import AmazonProductCard from '@/components/affiliate/AmazonProductCard.astro';
+
 When you're planning a three-month thru-hike with your dog, food is the single biggest logistical challenge. We chose The Honest Kitchen dehydrated dog food for our 900-mile Appalachian Trail section hike with Toby — here's an honest review after feeding it every day for three months.
+
+<AmazonProductCard product="honest-kitchen-dehydrated" ctaText="Check price on Amazon" />
 
 ## Why Dehydrated Food for Backpacking?
 
@@ -98,3 +108,9 @@ For multi-day backpacking and thru-hiking, The Honest Kitchen is the best option
 For day hikes? Just bring extra kibble. The price premium doesn't make sense for short trips.
 
 A healthy dog on trail will make or break your thru hiking experience. Test any new food at home for at least a month before committing to it on a long-distance hike.
+
+<AmazonButton
+  product="honest-kitchen-dehydrated"
+  ctaText="See Honest Kitchen on Amazon"
+  destinationMode="urlvue"
+/>

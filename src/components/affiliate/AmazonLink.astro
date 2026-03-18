@@ -1,0 +1,53 @@
+---
+import {
+  getAffiliateHref,
+  getAffiliateProduct,
+  type AffiliateHrefOptions,
+} from '@/lib/affiliate';
+
+interface Props {
+  product: string;
+  text?: string;
+  placement?: AffiliateHrefOptions['placement'];
+  trackingBucket?: AffiliateHrefOptions['trackingBucket'];
+  destinationMode?: AffiliateHrefOptions['destinationMode'];
+  class?: string;
+}
+
+const {
+  product,
+  text,
+  placement = 'article-inline',
+  trackingBucket,
+  destinationMode = 'amazon',
+  class: className = '',
+} = Astro.props;
+
+const affiliateProduct = getAffiliateProduct(product);
+if (!affiliateProduct) {
+  throw new Error(`Unknown affiliate product "${product}"`);
+}
+
+const articleSlug = Astro.url.pathname.replace(/^\/|\/$/g, '') || undefined;
+const href = getAffiliateHref(product, {
+  placement,
+  trackingBucket,
+  destinationMode,
+  linkType: 'text',
+  articleSlug,
+  ctaText: text ?? affiliateProduct.title,
+});
+const label = text ?? affiliateProduct.title;
+---
+
+<a
+  href={href}
+  target="_blank"
+  rel="nofollow noopener sponsored"
+  class:list={[
+    'font-medium text-forest underline decoration-trail-light underline-offset-2 hover:text-forest-dark',
+    className,
+  ]}
+>
+  {label}
+</a>

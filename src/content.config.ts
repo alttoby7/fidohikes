@@ -1,5 +1,7 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
+import { affiliateProductMap } from './lib/affiliate-registry-node';
+import { destinationModes, trackingBuckets } from './lib/affiliate-types';
 
 const pillarSlugs = ['gear', 'apparel', 'hiking', 'camping', 'water', 'safety', 'training', 'destinations'] as const;
 const formatTypes = ['guide', 'listicle', 'review', 'destination_guide', 'how_to'] as const;
@@ -22,6 +24,9 @@ const affiliateSchema = z.object({
   products: z.array(z.string()).optional(),
 });
 
+const trackingBucketSchema = z.enum(trackingBuckets);
+const destinationModeSchema = z.enum(destinationModes);
+
 // Base fields shared by all formats
 const baseFields = {
   title: z.string(),
@@ -41,6 +46,12 @@ const baseFields = {
   relatedPages: z.array(z.string()).default([]),
   faqs: z.array(faqSchema).default([]),
   affiliate: affiliateSchema.optional(),
+  hasAffiliateLinks: z.boolean().default(false),
+  affiliateProducts: z.array(z.string()).default([]),
+  affiliateBucket: trackingBucketSchema.optional(),
+  affiliateDestinationMode: destinationModeSchema.optional(),
+  contentCluster: z.string().optional(),
+  disableOneTag: z.boolean().default(false),
   funnelStage: z.enum(funnelStages).default('awareness'),
   // Listicle
   listItems: z.array(z.string()).optional(),
@@ -67,9 +78,21 @@ const baseFields = {
   supplies: z.array(z.string()).optional(),
 };
 
+const pageSchema = z.object(baseFields).superRefine((data, ctx) => {
+  for (const productId of data.affiliateProducts) {
+    if (!affiliateProductMap.has(productId)) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: `Unknown affiliate product "${productId}"`,
+        path: ['affiliateProducts'],
+      });
+    }
+  }
+});
+
 const pages = defineCollection({
   loader: glob({ pattern: '**/*.mdx', base: './src/content/pages' }),
-  schema: z.object(baseFields),
+  schema: pageSchema,
 });
 
 const pillars = defineCollection({
@@ -117,4 +140,19 @@ const products = defineCollection({
   }),
 });
 
-export const collections = { pages, pillars, clusters, products };
+const affiliateRegistry = defineCollection({
+  loader: glob({ pattern: '*.json', base: './src/content/affiliate-products' }),
+  schema: z.object({
+    productId: z.string(),
+    asin: z.string(),
+    title: z.string(),
+    category: z.string(),
+    defaultTrackingBucket: trackingBucketSchema,
+    image: z.string(),
+    status: z.enum(['active', 'draft', 'disabled']),
+    urlVueSlug: z.string().optional(),
+    notes: z.string().optional(),
+  }),
+});
+
+export const collections = { pages, pillars, clusters, products, affiliateRegistry };

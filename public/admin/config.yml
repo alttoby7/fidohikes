@@ -1,0 +1,82 @@
+local_backend: true
+site_url: https://fidohikes.com
+display_url: https://fidohikes.com
+publish_mode: editorial_workflow
+
+backend:
+  name: github
+  repo: alttoby7/fidohikes
+  branch: main
+  # For production login on Vercel, add your OAuth proxy settings here.
+  # base_url: https://your-oauth-proxy.example.com
+  # auth_endpoint: auth
+
+media_folder: public/images/uploads
+public_folder: /images/uploads
+
+collections:
+  - name: pages
+    label: Articles
+    label_singular: Article
+    folder: src/content/pages
+    create: true
+    extension: mdx
+    format: frontmatter
+    nested:
+      depth: 10
+      summary: "{{title}}"
+    slug: "{{slug}}"
+    summary: "{{title}}"
+    fields:
+      - { label: Title, name: title, widget: string }
+      - { label: Slug, name: slug, widget: string, hint: "Keep the current site slug format, including nested paths when needed." }
+      - { label: Format, name: format, widget: select, options: [guide, listicle, review, destination_guide, how_to] }
+      - { label: Page Role, name: pageRole, widget: select, options: [pillar, cluster, supporting] }
+      - { label: Pillar, name: pillar, widget: select, options: [gear, apparel, hiking, camping, water, safety, training, destinations] }
+      - { label: Cluster, name: cluster, widget: string, required: false }
+      - { label: Excerpt, name: excerpt, widget: text, required: false }
+      - { label: Target Keyword, name: targetKeyword, widget: string }
+      - label: Secondary Keywords
+        name: secondaryKeywords
+        widget: list
+        required: false
+      - { label: Status, name: status, widget: select, options: [draft, review, published] }
+      - { label: Published Date, name: publishedDate, widget: datetime, required: false }
+      - { label: Updated Date, name: updatedDate, widget: datetime, required: false }
+      - { label: Hero Image, name: heroImage, widget: image, required: false }
+      - { label: Has Affiliate Links, name: hasAffiliateLinks, widget: boolean, required: false, default: false }
+      - label: Affiliate Products
+        name: affiliateProducts
+        widget: list
+        required: false
+      - { label: Affiliate Bucket, name: affiliateBucket, widget: select, required: false, options: [reviews, comparisons, info, homepage, email, social] }
+      - { label: Affiliate Destination Mode, name: affiliateDestinationMode, widget: select, required: false, options: [amazon, urlvue] }
+      - { label: Disable oneTag, name: disableOneTag, widget: boolean, required: false, default: false }
+      - { label: Content Cluster, name: contentCluster, widget: string, required: false }
+      - label: Related Pages
+        name: relatedPages
+        widget: list
+        required: false
+      - label: Body
+        name: body
+        widget: markdown
+
+  - name: affiliate_products
+    label: Affiliate Products
+    label_singular: Affiliate Product
+    folder: src/content/affiliate-products
+    create: true
+    extension: json
+    format: json
+    slug: "{{fields.productId}}"
+    summary: "{{title}}"
+    fields:
+      - { label: Product ID, name: productId, widget: string }
+      - { label: Title, name: title, widget: string }
+      - { label: ASIN, name: asin, widget: string }
+      - { label: Category, name: category, widget: string }
+      - { label: Tracking Bucket, name: defaultTrackingBucket, widget: select, options: [reviews, comparisons, info, homepage, email, social] }
+      - { label: Image, name: image, widget: image }
+      - { label: Status, name: status, widget: select, options: [active, draft, disabled] }
+      - { label: URL Vue Slug, name: urlVueSlug, widget: string, required: false }
+      - { label: Notes, name: notes, widget: text, required: false }

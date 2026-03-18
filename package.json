@@ -4,6 +4,11 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "affiliate:add": "node scripts/add-affiliate-product.ts",
+    "affiliate:check": "node scripts/check-affiliate-links.ts",
+    "affiliate:list": "node scripts/list-affiliate-products.ts",
+    "affiliate:find": "node scripts/list-affiliate-products.ts",
+    "prebuild": "npm run affiliate:check",
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",

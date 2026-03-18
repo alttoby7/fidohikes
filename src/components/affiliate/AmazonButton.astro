@@ -1,0 +1,52 @@
+---
+import {
+  getAffiliateHref,
+  getAffiliateProduct,
+  type AffiliateHrefOptions,
+} from '@/lib/affiliate';
+
+interface Props {
+  product: string;
+  ctaText?: string;
+  placement?: AffiliateHrefOptions['placement'];
+  trackingBucket?: AffiliateHrefOptions['trackingBucket'];
+  destinationMode?: AffiliateHrefOptions['destinationMode'];
+}
+
+const {
+  product,
+  ctaText = 'Check price on Amazon',
+  placement = 'article-cta',
+  trackingBucket,
+  destinationMode = 'amazon',
+} = Astro.props;
+
+const affiliateProduct = getAffiliateProduct(product);
+if (!affiliateProduct) {
+  throw new Error(`Unknown affiliate product "${product}"`);
+}
+
+const articleSlug = Astro.url.pathname.replace(/^\/|\/$/g, '') || undefined;
+const href = getAffiliateHref(product, {
+  placement,
+  trackingBucket,
+  destinationMode,
+  linkType: 'button',
+  articleSlug,
+  ctaText,
+});
+---
+
+<div class="my-6">
+  <a
+    href={href}
+    target="_blank"
+    rel="nofollow noopener sponsored"
+    class="inline-flex items-center gap-3 rounded-lg bg-forest px-5 py-3 font-ui text-sm font-semibold text-white transition-colors hover:bg-forest-dark"
+  >
+    <span>{ctaText}</span>
+    <span class="rounded-full border border-white/25 bg-white/10 px-2 py-0.5 text-[11px] uppercase tracking-wide">
+      Paid link
+    </span>
+  </a>
+</div>

@@ -42,6 +42,13 @@ faqs:
     answer: "A well-fitted backpack. If your dog can carry their own food, it dramatically extends how many days you can stay on trail between resupplies."
 affiliate:
   enabled: true
+hasAffiliateLinks: true
+affiliateProducts:
+  - "dogids-waterproof-collar"
+  - "honest-kitchen-dehydrated"
+  - "mushers-secret"
+affiliateBucket: "info"
+contentCluster: "outdoor-dog-gear-brands-and-reviews"
 relatedPages:
   - "thru-hike-with-a-dog"
   - "waterproof-backpacking-dog-collar"
@@ -49,7 +56,13 @@ relatedPages:
   - "mushers-secret"
 ---
 
+import AmazonButton from '@/components/affiliate/AmazonButton.astro';
+import AmazonLink from '@/components/affiliate/AmazonLink.astro';
+import AmazonProductCard from '@/components/affiliate/AmazonProductCard.astro';
+
 This is the complete gear list we used for our 900-mile Appalachian Trail section hike with Toby, a 75-pound chocolate lab and German shorthaired pointer mix. Every item was trail-tested for three months. Total cost: **$880**.
+
+<AmazonProductCard product="dogids-waterproof-collar" ctaText="See the collar we used" />
 
 Physical preparation was more important to our success than any single gear item. But the right gear made the difference between comfortable and miserable.
 
@@ -113,6 +126,8 @@ A large silicone bowl that served for both food and water. Weighs almost nothing
 
 68 pounds purchased in bulk, portioned into individual meal bags before departure. Two cups dehydrated per meal, mixed with 3–4 cups water. Added olive oil to boost calories. Toby ate approximately 270 pounds of rehydrated food over three months.
 
+<AmazonButton product="honest-kitchen-dehydrated" ctaText="Check Honest Kitchen on Amazon" />
+
 ## Trowel: Deuce of Spades — $20
 
 At 0.6 ounces, this is the lightest trowel you can carry. Essential for burying dog waste on trail. Only downside: struggles in frozen or packed earth.
@@ -146,3 +161,5 @@ Served double duty for human and dog hydration. The 3-liter capacity was plenty 
 1. **Skip the sleeping bag** for thru-hiking — too bulky. Find a lighter insulation solution.
 2. **Bring booties from day one** — don't wait until paw damage forces the issue.
 3. **Buy more Musher's Secret** — one can was cutting it close.
+
+If you're building a similar kit, start with <AmazonLink product="mushers-secret" text="Musher's Secret on Amazon" />, <AmazonLink product="honest-kitchen-dehydrated" text="Honest Kitchen dehydrated food" />, and <AmazonLink product="dogids-waterproof-collar" text="a waterproof engraved collar" />.
