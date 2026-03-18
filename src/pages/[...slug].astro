@@ -1,0 +1,61 @@
+---
+import { getCollection, render } from 'astro:content';
+import ArticleLayout from '@/components/ArticleLayout.astro';
+import PillarHub from '@/components/PillarHub.astro';
+
+export async function getStaticPaths() {
+  const reserved = new Set([
+    'rss.xml', 'robots.txt', 'sitemap.xml', 'sitemap-index.xml',
+    'tools', 'about', 'contact', 'affiliate-disclosure',
+    'editorial-policy', 'privacy-policy', '404',
+  ]);
+
+  const pages = await getCollection('pages');
+  const pillars = await getCollection('pillars');
+
+  const paths: { params: { slug: string }; props: Record<string, unknown> }[] = [];
+
+  // Pillar hub pages
+  for (const pillar of pillars) {
+    if (reserved.has(pillar.data.slug)) {
+      throw new Error(`Pillar slug "${pillar.data.slug}" collides with reserved route`);
+    }
+    paths.push({
+      params: { slug: pillar.data.slug },
+      props: { type: 'pillar', pillar },
+    });
+  }
+
+  // Content pages
+  for (const page of pages) {
+    const slug = page.data.slug;
+    const firstSegment = slug.split('/')[0];
+    if (reserved.has(firstSegment)) {
+      throw new Error(`Page slug "${slug}" collides with reserved route "${firstSegment}"`);
+    }
+    if (pillars.some((p) => p.data.slug === slug)) continue;
+    paths.push({
+      params: { slug },
+      props: { type: 'page', page },
+    });
+  }
+
+  return paths;
+}
+
+const { type, page, pillar } = Astro.props;
+
+let Content: any = null;
+if (type === 'page' && page) {
+  const rendered = await render(page);
+  Content = rendered.Content;
+}
+---
+
+{type === 'pillar' && <PillarHub pillar={pillar} />}
+
+{type === 'page' && Content && (
+  <ArticleLayout page={page}>
+    <Content />
+  </ArticleLayout>
+)}

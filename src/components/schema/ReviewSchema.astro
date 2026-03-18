@@ -1,0 +1,34 @@
+---
+interface Props {
+  name: string;
+  rating: number;
+  verdict: string;
+  bestFor?: string[];
+  slug: string;
+  image?: string;
+}
+
+const { name, rating, verdict, bestFor = [], slug, image } = Astro.props;
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Review',
+  itemReviewed: {
+    '@type': 'Product',
+    name,
+    image: image ? `https://fidohikes.com${image}` : undefined,
+  },
+  reviewRating: {
+    '@type': 'Rating',
+    ratingValue: rating,
+    bestRating: 5,
+  },
+  reviewBody: verdict,
+  author: {
+    '@type': 'Organization',
+    name: 'FidoHikes',
+  },
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />

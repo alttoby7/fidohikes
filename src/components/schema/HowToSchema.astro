@@ -1,0 +1,33 @@
+---
+interface Props {
+  name: string;
+  description: string;
+  estimatedTime?: string;
+  tools?: string[];
+  supplies?: string[];
+  steps: { name: string; text: string }[];
+  image?: string;
+}
+
+const { name, description, estimatedTime, tools = [], supplies = [], steps, image } = Astro.props;
+
+const schema: Record<string, unknown> = {
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  name,
+  description,
+  image: image ? `https://fidohikes.com${image}` : undefined,
+  step: steps.map((s, i) => ({
+    '@type': 'HowToStep',
+    position: i + 1,
+    name: s.name,
+    text: s.text,
+  })),
+};
+
+if (estimatedTime) schema.totalTime = estimatedTime;
+if (tools.length) schema.tool = tools.map((t) => ({ '@type': 'HowToTool', name: t }));
+if (supplies.length) schema.supply = supplies.map((s) => ({ '@type': 'HowToSupply', name: s }));
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />

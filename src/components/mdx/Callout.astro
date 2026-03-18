@@ -1,0 +1,24 @@
+---
+interface Props {
+  type?: 'info' | 'warning' | 'tip' | 'danger';
+  title?: string;
+}
+
+const { type = 'info', title } = Astro.props;
+
+const styles: Record<string, { bg: string; border: string; icon: string }> = {
+  info: { bg: 'bg-blue-50', border: 'border-blue-300', icon: 'i' },
+  warning: { bg: 'bg-amber-50', border: 'border-amber-300', icon: '!' },
+  tip: { bg: 'bg-green-50', border: 'border-green-300', icon: '*' },
+  danger: { bg: 'bg-red-50', border: 'border-red-300', icon: 'x' },
+};
+
+const s = styles[type];
+---
+
+<aside class={`${s.bg} border-l-4 ${s.border} p-4 my-6 rounded-r-lg`}>
+  {title && <p class="font-semibold mb-1">{title}</p>}
+  <div class="text-sm">
+    <slot />
+  </div>
+</aside>

@@ -1,0 +1,76 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Dog Hiking Calorie Calculator"
+  description="Calculate how many calories your dog needs on hiking days based on weight, activity level, and trail conditions."
+>
+  <div class="max-w-3xl mx-auto px-4 py-12">
+    <h1 class="font-heading text-3xl md:text-4xl font-800 text-earth mb-4">
+      Dog Hiking Calorie Calculator
+    </h1>
+    <p class="text-lg text-gray-600 mb-8">
+      Find out how much food your dog needs on hiking days. Enter your dog's details below.
+    </p>
+
+    <div id="calculator" class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+      <div class="space-y-4">
+        <div>
+          <label for="weight" class="block text-sm font-medium text-gray-700 mb-1">Dog's Weight (lbs)</label>
+          <input type="number" id="weight" min="1" max="300" value="50"
+            class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-forest focus:border-forest" />
+        </div>
+        <div>
+          <label for="activity" class="block text-sm font-medium text-gray-700 mb-1">Activity Level</label>
+          <select id="activity" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-forest focus:border-forest">
+            <option value="1.2">Rest day (light walk)</option>
+            <option value="1.5">Moderate hike (3-6 miles)</option>
+            <option value="1.8" selected>Long hike (6-12 miles)</option>
+            <option value="2.2">Strenuous hike (12+ miles, elevation)</option>
+            <option value="2.5">Backpacking (carrying pack)</option>
+          </select>
+        </div>
+        <div>
+          <label for="terrain" class="block text-sm font-medium text-gray-700 mb-1">Terrain</label>
+          <select id="terrain" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-forest focus:border-forest">
+            <option value="1.0">Flat/paved</option>
+            <option value="1.1" selected>Moderate trail</option>
+            <option value="1.2">Rocky/steep</option>
+            <option value="1.3">Snow/sand</option>
+          </select>
+        </div>
+        <button id="calculate" class="w-full bg-forest text-white py-3 rounded-lg font-medium hover:bg-forest-dark transition-colors">
+          Calculate Calories
+        </button>
+      </div>
+      <div id="result" class="mt-6 hidden">
+        <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+          <p class="text-sm text-gray-600">Estimated daily calories needed:</p>
+          <p id="calories" class="text-3xl font-heading font-800 text-forest mt-1"></p>
+          <p id="comparison" class="text-sm text-gray-500 mt-2"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const btn = document.getElementById('calculate')!;
+    btn.addEventListener('click', () => {
+      const weight = parseFloat((document.getElementById('weight') as HTMLInputElement).value);
+      const activity = parseFloat((document.getElementById('activity') as HTMLSelectElement).value);
+      const terrain = parseFloat((document.getElementById('terrain') as HTMLSelectElement).value);
+
+      // RER = 70 * (weight_kg ^ 0.75), then multiply by activity and terrain factors
+      const weightKg = weight * 0.4536;
+      const rer = 70 * Math.pow(weightKg, 0.75);
+      const hiking = Math.round(rer * activity * terrain);
+      const rest = Math.round(rer * 1.2);
+
+      document.getElementById('calories')!.textContent = `${hiking} kcal`;
+      document.getElementById('comparison')!.textContent =
+        `That's ${Math.round(((hiking - rest) / rest) * 100)}% more than a rest day (${rest} kcal).`;
+      document.getElementById('result')!.classList.remove('hidden');
+    });
+  </script>
+</BaseLayout>

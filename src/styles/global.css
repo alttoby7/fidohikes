@@ -1,0 +1,74 @@
+@import "tailwindcss";
+
+@theme {
+  --color-forest: #2d5016;
+  --color-forest-dark: #1a3a0a;
+  --color-trail: #8b6914;
+  --color-trail-light: #d4a843;
+  --color-earth: #3e2723;
+  --color-earth-light: #5d4037;
+  --color-sky: #4a90d9;
+  --color-snow: #f5f5f0;
+  --color-bark: #6d4c41;
+  --color-moss: #558b2f;
+  --font-heading: "Plus Jakarta Sans", sans-serif;
+  --font-body: "Inter", sans-serif;
+}
+
+html {
+  font-family: var(--font-body);
+  scroll-behavior: smooth;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+}
+
+/* Prose styles for MDX content */
+.prose {
+  max-width: 72ch;
+  line-height: 1.75;
+}
+.prose h2 {
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-earth);
+}
+.prose h3 {
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-earth-light);
+}
+.prose p {
+  margin-bottom: 1.25rem;
+}
+.prose a {
+  color: var(--color-forest);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.prose a:hover {
+  color: var(--color-forest-dark);
+}
+.prose ul, .prose ol {
+  margin-bottom: 1.25rem;
+  padding-left: 1.5rem;
+}
+.prose li {
+  margin-bottom: 0.5rem;
+}
+.prose img {
+  border-radius: 0.5rem;
+  margin: 1.5rem 0;
+}
+.prose blockquote {
+  border-left: 4px solid var(--color-trail-light);
+  padding-left: 1rem;
+  margin: 1.5rem 0;
+  color: var(--color-earth-light);
+  font-style: italic;
+}

@@ -1,0 +1,51 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const pillars = await getCollection('pillars');
+const sortedPillars = pillars.sort((a, b) => a.data.order - b.data.order);
+const pages = await getCollection('pages');
+const publishedCount = pages.filter((p) => p.data.status === 'published').length;
+---
+
+<BaseLayout title="FidoHikes — Hiking & Camping with Your Dog">
+  <!-- Hero -->
+  <section class="bg-gradient-to-b from-green-50 to-white py-16 md:py-24">
+    <div class="max-w-4xl mx-auto px-4 text-center">
+      <h1 class="font-heading text-4xl md:text-5xl font-800 text-earth mb-4">
+        Adventure Starts with Your Dog
+      </h1>
+      <p class="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto mb-8">
+        Gear reviews, trail guides, safety tips, and everything you need for unforgettable outdoor adventures with your four-legged hiking partner.
+      </p>
+      <div class="flex flex-wrap justify-center gap-3">
+        <a href="/gear/" class="bg-forest text-white px-6 py-3 rounded-lg font-medium hover:bg-forest-dark transition-colors">
+          Browse Gear
+        </a>
+        <a href="/destinations/" class="border border-forest text-forest px-6 py-3 rounded-lg font-medium hover:bg-green-50 transition-colors">
+          Find Trails
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pillars -->
+  <section class="max-w-6xl mx-auto px-4 py-16">
+    <h2 class="font-heading text-2xl md:text-3xl font-700 text-earth text-center mb-10">
+      Explore by Topic
+    </h2>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {sortedPillars.map((pillar) => (
+        <a
+          href={`/${pillar.data.slug}/`}
+          class="block p-6 rounded-xl border border-gray-200 hover:border-forest hover:shadow-md transition-all group"
+        >
+          <h3 class="font-heading text-lg font-700 text-earth group-hover:text-forest transition-colors">
+            {pillar.data.name}
+          </h3>
+          <p class="mt-2 text-sm text-gray-500">{pillar.data.description}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

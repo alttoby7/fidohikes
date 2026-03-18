@@ -1,0 +1,91 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import BreadcrumbSchema from '@/components/schema/BreadcrumbSchema.astro';
+import { getClustersByPillar, getPagesByPillar, getPagesByCluster } from '@/lib/registry';
+import type { Pillar } from '@/lib/registry';
+
+interface Props {
+  pillar: Pillar;
+}
+
+const { pillar } = Astro.props;
+const { data } = pillar;
+const clusters = await getClustersByPillar(data.slug);
+const allPages = await getPagesByPillar(data.slug);
+
+// Build cluster → articles map
+const clusterArticles = new Map<string, typeof allPages>();
+for (const cluster of clusters) {
+  const articles = await getPagesByCluster(cluster.data.slug);
+  clusterArticles.set(cluster.data.slug, articles);
+}
+
+// Unclustered pages (pillar-level pages not in any cluster)
+const clusteredSlugs = new Set(
+  [...clusterArticles.values()].flat().map((p) => p.data.slug)
+);
+const unclustered = allPages.filter((p) => !clusteredSlugs.has(p.data.slug));
+
+const breadcrumbs = [
+  { label: 'Home', href: '/' },
+  { label: data.name, href: `/${data.slug}/` },
+];
+---
+
+<BaseLayout title={data.name} description={data.description}>
+  <BreadcrumbSchema items={breadcrumbs} />
+
+  <div class="max-w-4xl mx-auto px-4 py-8">
+    <nav aria-label="Breadcrumb" class="text-sm text-gray-500 mb-6">
+      <ol class="flex gap-1">
+        <li><a href="/" class="hover:text-forest">Home</a></li>
+        <li class="flex items-center gap-1">
+          <span class="text-gray-300">/</span>
+          <span class="text-gray-700">{data.name}</span>
+        </li>
+      </ol>
+    </nav>
+
+    <h1 class="font-heading text-3xl md:text-4xl font-800 text-earth mb-4">{data.name}</h1>
+    <p class="text-lg text-gray-600 mb-10">{data.description}</p>
+
+    {clusters.map((cluster) => {
+      const articles = clusterArticles.get(cluster.data.slug) ?? [];
+      return (
+        <section class="mb-10">
+          <h2 class="font-heading text-xl font-700 text-earth-light mb-4">
+            {cluster.data.name}
+            <span class="text-sm font-normal text-gray-400 ml-2">({articles.length} articles)</span>
+          </h2>
+          <p class="text-gray-600 mb-4">{cluster.data.description}</p>
+          {articles.length > 0 && (
+            <ul class="space-y-2">
+              {articles.map((article) => (
+                <li>
+                  <a href={`/${article.data.slug}/`} class="text-forest hover:underline">
+                    {article.data.title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+      );
+    })}
+
+    {unclustered.length > 0 && (
+      <section class="mb-10">
+        <h2 class="font-heading text-xl font-700 text-earth-light mb-4">More Articles</h2>
+        <ul class="space-y-2">
+          {unclustered.map((article) => (
+            <li>
+              <a href={`/${article.data.slug}/`} class="text-forest hover:underline">
+                {article.data.title}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+  </div>
+</BaseLayout>

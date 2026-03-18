@@ -1,0 +1,27 @@
+---
+const navLinks = [
+  { label: 'Gear', href: '/gear/' },
+  { label: 'Hiking', href: '/hiking/' },
+  { label: 'Camping', href: '/camping/' },
+  { label: 'Safety', href: '/safety/' },
+  { label: 'Destinations', href: '/destinations/' },
+  { label: 'About', href: '/about/' },
+];
+---
+
+<header class="border-b border-gray-200 bg-white sticky top-0 z-50">
+  <nav class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+    <a href="/" class="font-heading text-2xl font-800 text-forest">
+      FidoHikes
+    </a>
+    <ul class="hidden md:flex items-center gap-6 text-sm font-medium">
+      {navLinks.map((link) => (
+        <li>
+          <a href={link.href} class="text-gray-600 hover:text-forest transition-colors">
+            {link.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+</header>

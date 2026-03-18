@@ -1,0 +1,32 @@
+---
+import type { Page } from '@/lib/registry';
+
+interface Props {
+  page: Page;
+}
+
+const { page } = Astro.props;
+const { data } = page;
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: data.title,
+  description: data.excerpt ?? '',
+  image: data.heroImage ? `https://fidohikes.com${data.heroImage}` : undefined,
+  datePublished: data.publishedDate?.toISOString(),
+  dateModified: (data.updatedDate ?? data.publishedDate)?.toISOString(),
+  author: {
+    '@type': 'Organization',
+    name: 'FidoHikes',
+    url: 'https://fidohikes.com/',
+  },
+  publisher: { '@id': 'https://fidohikes.com/#organization' },
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': `https://fidohikes.com/${data.slug}/`,
+  },
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />

@@ -1,0 +1,27 @@
+---
+const schema = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': 'https://fidohikes.com/#website',
+      url: 'https://fidohikes.com/',
+      name: 'FidoHikes',
+      description: 'Hiking, camping, and outdoor adventures with your dog.',
+      publisher: { '@id': 'https://fidohikes.com/#organization' },
+    },
+    {
+      '@type': 'Organization',
+      '@id': 'https://fidohikes.com/#organization',
+      name: 'FidoHikes',
+      url: 'https://fidohikes.com/',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://fidohikes.com/images/logo.png',
+      },
+    },
+  ],
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />

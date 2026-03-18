@@ -1,0 +1,51 @@
+---
+interface Product {
+  name: string;
+  rating?: number;
+  price?: string;
+  bestFor?: string;
+  url: string;
+}
+
+interface Props {
+  products: Product[];
+  title?: string;
+}
+
+const { products, title = 'Product Comparison' } = Astro.props;
+---
+
+<div class="my-8 overflow-x-auto">
+  <h3 class="font-heading text-lg font-700 text-earth mb-4">{title}</h3>
+  <table class="w-full text-sm border-collapse">
+    <thead>
+      <tr class="bg-gray-50 border-b border-gray-200">
+        <th class="text-left p-3 font-semibold">Product</th>
+        <th class="text-center p-3 font-semibold">Rating</th>
+        <th class="text-center p-3 font-semibold">Price</th>
+        <th class="text-left p-3 font-semibold">Best For</th>
+        <th class="text-center p-3 font-semibold"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {products.map((p, i) => (
+        <tr class={`border-b border-gray-100 ${i % 2 === 0 ? '' : 'bg-gray-50/50'}`}>
+          <td class="p-3 font-medium">{p.name}</td>
+          <td class="p-3 text-center text-amber-500">{p.rating ?? '—'}</td>
+          <td class="p-3 text-center">{p.price ?? '—'}</td>
+          <td class="p-3 text-gray-600">{p.bestFor ?? '—'}</td>
+          <td class="p-3 text-center">
+            <a
+              href={p.url}
+              target="_blank"
+              rel="nofollow noopener sponsored"
+              class="text-forest hover:underline text-xs font-medium"
+            >
+              View
+            </a>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
