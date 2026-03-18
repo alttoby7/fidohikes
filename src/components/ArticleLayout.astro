@@ -4,6 +4,7 @@ import BreadcrumbSchema from '@/components/schema/BreadcrumbSchema.astro';
 import ArticleSchema from '@/components/schema/ArticleSchema.astro';
 import FAQSchema from '@/components/schema/FAQSchema.astro';
 import AffiliateDisclosure from '@/components/affiliate/AffiliateDisclosure.astro';
+import AuthorBio from '@/components/AuthorBio.astro';
 import { getBreadcrumbs, getRelatedPages } from '@/lib/registry';
 import type { Page } from '@/lib/registry';
 
@@ -56,14 +57,18 @@ const showAffiliate = data.affiliate?.enabled ?? false;
       <p class="text-lg text-gray-600 mb-6">{data.excerpt}</p>
     )}
 
-    {data.publishedDate && (
-      <div class="text-sm text-gray-400 mb-8">
-        Published {data.publishedDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
-        {data.updatedDate && (
-          <span> · Updated {data.updatedDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
-        )}
-      </div>
-    )}
+    <!-- Author byline -->
+    <div class="flex flex-wrap items-center gap-4 mb-8">
+      <AuthorBio variant="compact" />
+      {data.publishedDate && (
+        <span class="text-sm text-gray-400">
+          {data.publishedDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+          {data.updatedDate && (
+            <span> · Updated {data.updatedDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+          )}
+        </span>
+      )}
+    </div>
 
     {showAffiliate && <AffiliateDisclosure />}
 
@@ -97,18 +102,28 @@ const showAffiliate = data.affiliate?.enabled ?? false;
       </section>
     )}
 
+    <!-- Author bio -->
+    <div class="mt-12 border-t border-sand pt-8">
+      <AuthorBio variant="full" />
+    </div>
+
     <!-- Related articles -->
     {related.length > 0 && (
-      <section class="mt-12 border-t border-gray-200 pt-8">
+      <section class="mt-12 border-t border-sand pt-8">
         <h2 class="font-heading text-2xl font-700 text-earth mb-6">Related Articles</h2>
         <div class="grid sm:grid-cols-2 gap-4">
           {related.map((r) => (
             <a
               href={`/${r.data.slug}/`}
-              class="block p-4 rounded-lg border border-gray-200 hover:border-forest hover:shadow-sm transition-all"
+              class="block rounded-lg bg-white border border-sand hover:border-forest hover:shadow-sm transition-all overflow-hidden"
             >
-              <h3 class="font-semibold text-gray-900">{r.data.title}</h3>
-              {r.data.excerpt && <p class="mt-1 text-sm text-gray-500 line-clamp-2">{r.data.excerpt}</p>}
+              {r.data.heroImage && (
+                <img src={r.data.heroImage} alt={r.data.title} class="w-full h-36 object-cover" loading="lazy" />
+              )}
+              <div class="p-4">
+                <h3 class="font-semibold text-earth">{r.data.title}</h3>
+                {r.data.excerpt && <p class="mt-1 text-sm text-earth-light line-clamp-2">{r.data.excerpt}</p>}
+              </div>
             </a>
           ))}
         </div>

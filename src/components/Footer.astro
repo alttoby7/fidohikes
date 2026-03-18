@@ -1,4 +1,6 @@
 ---
+import AuthorBio from '@/components/AuthorBio.astro';
+
 const year = new Date().getFullYear();
 const footerLinks = [
   { label: 'About', href: '/about/' },
@@ -7,30 +9,59 @@ const footerLinks = [
   { label: 'Affiliate Disclosure', href: '/affiliate-disclosure/' },
   { label: 'Editorial Policy', href: '/editorial-policy/' },
 ];
+const startLinks = [
+  { label: 'Thru-Hiking with a Dog', href: '/thru-hike-with-a-dog/' },
+  { label: 'Dog Gear List', href: '/dog-gear-list-for-long-distance-or-thru-hiking-with-a-dog/' },
+  { label: 'Dog Calorie Calculator', href: '/hiking-dog-calorie-needs-with-dog-food-calculator/' },
+];
 ---
 
-<footer class="bg-gray-50 border-t border-gray-200 mt-16">
+<footer class="bg-canvas border-t border-sand mt-16">
   <div class="max-w-6xl mx-auto px-4 py-12">
-    <div class="flex flex-col md:flex-row justify-between gap-8">
+    <!-- Author bio -->
+    <div class="mb-10">
+      <AuthorBio variant="full" />
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- Brand -->
       <div>
         <a href="/" class="font-heading text-xl font-700 text-forest">FidoHikes</a>
-        <p class="mt-2 text-sm text-gray-500 max-w-xs">
-          Gear reviews, trail guides, and everything you need for outdoor adventures with your dog.
+        <p class="mt-2 text-sm text-earth-light max-w-xs">
+          Real gear reviews, trail guides, and safety tips from 900 miles on the Appalachian Trail with our dog Toby.
         </p>
       </div>
-      <nav>
-        <ul class="flex flex-wrap gap-x-6 gap-y-2 text-sm">
-          {footerLinks.map((link) => (
+
+      <!-- Best place to start -->
+      <div>
+        <h3 class="font-heading text-sm font-700 uppercase tracking-wide text-earth mb-3">Best Place to Start</h3>
+        <ul class="space-y-2">
+          {startLinks.map((link) => (
             <li>
-              <a href={link.href} class="text-gray-500 hover:text-forest transition-colors">
+              <a href={link.href} class="text-sm text-earth-light hover:text-forest transition-colors">
                 {link.label}
               </a>
             </li>
           ))}
         </ul>
-      </nav>
+      </div>
+
+      <!-- Site links -->
+      <div>
+        <h3 class="font-heading text-sm font-700 uppercase tracking-wide text-earth mb-3">Site</h3>
+        <ul class="space-y-2">
+          {footerLinks.map((link) => (
+            <li>
+              <a href={link.href} class="text-sm text-earth-light hover:text-forest transition-colors">
+                {link.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
-    <p class="mt-8 text-xs text-gray-400">
+
+    <p class="mt-10 pt-6 border-t border-sand text-xs text-earth-light/60">
       &copy; {year} FidoHikes. All rights reserved.
     </p>
   </div>

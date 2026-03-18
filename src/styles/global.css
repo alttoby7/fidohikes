@@ -11,17 +11,53 @@
   --color-snow: #f5f5f0;
   --color-bark: #6d4c41;
   --color-moss: #558b2f;
+  --color-canvas: #f5f0e8;
+  --color-sand: #e8dcc8;
+  --color-parchment: #faf6f0;
   --font-heading: "Plus Jakarta Sans", sans-serif;
-  --font-body: "Inter", sans-serif;
+  --font-body: "Lora", serif;
+  --font-ui: "Inter", sans-serif;
 }
 
 html {
   font-family: var(--font-body);
   scroll-behavior: smooth;
+  background-color: var(--color-parchment);
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
+}
+
+/* UI elements stay sans-serif */
+nav, button, .font-ui {
+  font-family: var(--font-ui);
+}
+
+/* Pull quotes */
+.prose blockquote.pull-quote {
+  font-size: 1.35rem;
+  font-style: italic;
+  font-family: var(--font-body);
+  border-left: 4px solid var(--color-trail);
+  padding: 1rem 1.5rem;
+  margin: 2rem 0;
+  color: var(--color-earth);
+  background: var(--color-parchment);
+  border-radius: 0 0.5rem 0.5rem 0;
+}
+
+/* Image captions */
+.prose figure {
+  margin: 1.5rem 0;
+}
+.prose figcaption {
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+  color: var(--color-earth-light);
+  text-align: center;
+  margin-top: 0.5rem;
+  font-style: italic;
 }
 
 /* Prose styles for MDX content */

@@ -1,0 +1,27 @@
+---
+interface Props {
+  type?: 'worked' | 'different' | 'lesson' | 'tip';
+  title?: string;
+}
+
+const { type = 'tip', title } = Astro.props;
+
+const config = {
+  worked: { label: 'What worked for us', icon: '✓', border: 'border-forest', bg: 'bg-green-50/50' },
+  different: { label: "What I'd do differently", icon: '↻', border: 'border-trail', bg: 'bg-amber-50/50' },
+  lesson: { label: 'AT Lesson', icon: '◆', border: 'border-earth', bg: 'bg-stone-50' },
+  tip: { label: 'Trail Tip', icon: '▲', border: 'border-forest', bg: 'bg-green-50/50' },
+};
+
+const c = config[type];
+const displayTitle = title || c.label;
+---
+
+<aside class={`${c.bg} border-l-4 ${c.border} rounded-r-lg p-4 my-6`}>
+  <div class="flex items-center gap-2 mb-2">
+    <span class="font-heading font-700 text-sm uppercase tracking-wide text-earth">{displayTitle}</span>
+  </div>
+  <div class="text-earth-light leading-relaxed">
+    <slot />
+  </div>
+</aside>

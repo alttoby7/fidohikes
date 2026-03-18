@@ -10,20 +10,28 @@ const publishedCount = pages.filter((p) => p.data.status === 'published').length
 
 <BaseLayout title="FidoHikes — Hiking & Camping with Your Dog">
   <!-- Hero -->
-  <section class="bg-gradient-to-b from-green-50 to-white py-16 md:py-24">
-    <div class="max-w-4xl mx-auto px-4 text-center">
-      <h1 class="font-heading text-4xl md:text-5xl font-800 text-earth mb-4">
-        Adventure Starts with Your Dog
+  <section class="relative min-h-[70vh] flex items-center justify-center overflow-hidden">
+    <img
+      src="/images/about/backpacking-with-dog.jpg"
+      alt="Backpacking on the Appalachian Trail with Toby"
+      class="absolute inset-0 w-full h-full object-cover"
+      loading="eager"
+    />
+    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-black/20"></div>
+    <div class="relative max-w-4xl mx-auto px-4 text-center py-16">
+      <p class="font-ui text-sm uppercase tracking-widest text-trail-light mb-4">900 miles on the Appalachian Trail with our dog Toby</p>
+      <h1 class="font-heading text-4xl md:text-5xl lg:text-6xl font-800 text-white mb-6 leading-tight">
+        Every Trail Lesson<br />We Learned
       </h1>
-      <p class="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto mb-8">
-        Gear reviews, trail guides, safety tips, and everything you need for unforgettable outdoor adventures with your four-legged hiking partner.
+      <p class="text-lg md:text-xl text-white/80 max-w-2xl mx-auto mb-8">
+        Real gear reviews, trail guides, and safety tips from 900 miles of hiking the AT with a dog. No sponsored posts — just what actually worked.
       </p>
       <div class="flex flex-wrap justify-center gap-3">
-        <a href="/gear/" class="bg-forest text-white px-6 py-3 rounded-lg font-medium hover:bg-forest-dark transition-colors">
+        <a href="/gear/" class="bg-forest text-white px-6 py-3 rounded-lg font-ui font-medium hover:bg-forest-dark transition-colors">
           Browse Gear
         </a>
-        <a href="/destinations/" class="border border-forest text-forest px-6 py-3 rounded-lg font-medium hover:bg-green-50 transition-colors">
-          Find Trails
+        <a href="/about/" class="border border-white/40 text-white px-6 py-3 rounded-lg font-ui font-medium hover:bg-white/10 transition-colors">
+          Our Story
         </a>
       </div>
     </div>
@@ -38,12 +46,12 @@ const publishedCount = pages.filter((p) => p.data.status === 'published').length
       {sortedPillars.map((pillar) => (
         <a
           href={`/${pillar.data.slug}/`}
-          class="block p-6 rounded-xl border border-gray-200 hover:border-forest hover:shadow-md transition-all group"
+          class="block p-6 rounded-xl bg-white border border-sand hover:border-forest hover:shadow-md transition-all group"
         >
           <h3 class="font-heading text-lg font-700 text-earth group-hover:text-forest transition-colors">
             {pillar.data.name}
           </h3>
-          <p class="mt-2 text-sm text-gray-500">{pillar.data.description}</p>
+          <p class="mt-2 text-sm text-earth-light">{pillar.data.description}</p>
         </a>
       ))}
     </div>
